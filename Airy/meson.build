@@ -4,6 +4,7 @@
 
 spdlog = dependency('spdlog', required: true)
 glfw3 = dependency('glfw3', required: true)
+glm = dependency('glm', required: true)
 
 airy = library(
     'airy',
@@ -12,9 +13,13 @@ airy = library(
         'AiryEngine.cpp',
         'AiryShader.cpp',
         'AiryProgram.cpp',
+        'AiryMesh.cpp',
+        'AiryMeshRenderer.cpp',
+        'AiryMaterial.cpp',
+        'AiryMaterialPass.cpp',
         'External/glad/glad.c'
     ],
-    dependencies: [spdlog, glfw3]
+    dependencies: [spdlog, glfw3, glm]
 )
 
 subdir('Assets')

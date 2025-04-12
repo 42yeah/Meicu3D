@@ -4,6 +4,7 @@
 
 #include "AiryEngine.hpp"
 
+#include "AiryMesh.hpp"
 #include "Assets/AiryAssets.h"
 #include "AiryObject.hpp"
 #include "AiryShader.hpp"
@@ -11,16 +12,10 @@
 #include <GLFW/glfw3.h>
 #include <spdlog/spdlog.h>
 
-bool Engine::Init() {
-    mpGlobalContext = GlobalContext::Get();
-    if (!mpGlobalContext) {
-        return false;
-    }
-
-    return true;
-}
-
 void Engine::Finalize() {
+    mTestMeshRenderer = nullptr;
+    mShaderLibary.clear();
+    mMaterials.clear();
     if (mpWindow) {
         glfwDestroyWindow(mpWindow);
         mpWindow = nullptr;
@@ -29,6 +24,7 @@ void Engine::Finalize() {
 }
 
 bool Engine::CreateWindow(size_t width, size_t height, const char *szName) {
+    mpGlobalContext = GlobalContext::Get();
     if (!mpGlobalContext) {
         return false;
     }
@@ -46,14 +42,20 @@ bool Engine::CreateWindow(size_t width, size_t height, const char *szName) {
     return mpGlobalContext->LoadGLFunctions();
 }
 
-bool Engine::CompileInternalShaders() {
-    Ref<Program> dummyProgram = nullptr;
+bool Engine::InitEngine() {
+    do {
+        mpGlobalContext = GlobalContext::Get();
+        if (!mpGlobalContext)
+            break;
+        if (!CompileInternalShaders())
+            break;
 
-    CompileProgram(
-        "Triangle",
-        shaders::Triangle_vs_Path(),
-        shaders::Triangle_fs_Path(),
-        dummyProgram);
+        CreateInternalMaterials();
+
+        CreateDebugStuffs();
+
+        return true;
+    } while (false);
 
     return true;
 }
@@ -64,12 +66,45 @@ void Engine::MainLoop() {
     while (mRunning && !glfwWindowShouldClose(mpWindow)) {
         glfwPollEvents();
 
+        glClearColor(1.0f, 0.5f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        mTestMeshRenderer->Render("Lighting");
 
         glfwSwapBuffers(mpWindow);
     }
 
     mRunning = false;
+}
+
+bool Engine::CompileInternalShaders() {
+    Ref<Program> program = nullptr;
+
+    CompileProgram(
+        "Triangle",
+        shaders::Triangle_vs_Path(),
+        shaders::Triangle_fs_Path(),
+        program);
+
+    return true;
+}
+
+void Engine::CreateInternalMaterials() {
+    Ref<Material> triangleMaterial = std::make_shared<Material>();
+    Ref<MaterialPass> trianglePass = std::make_shared<MaterialPass>(triangleMaterial.get(), mShaderLibary["Triangle"]);
+
+    triangleMaterial->AddPass("Lighting", trianglePass);
+    // triangleMaterial->DeclareProperty<float>("time");
+
+    mMaterials["Triangle"] = std::move(triangleMaterial);
+}
+
+void Engine::CreateDebugStuffs() {
+    Ref<Mesh> testMesh = Mesh::TriangleMesh();
+    Ref<MeshRenderer> renderer = std::make_shared<MeshRenderer>();
+    renderer->SetMesh(std::move(testMesh));
+    renderer->SetMaterial(mMaterials["Triangle"]);
+
+    mTestMeshRenderer = std::move(renderer);
 }
 
 bool Engine::CompileProgram(
@@ -101,6 +136,6 @@ bool Engine::CompileProgram(
         return false;
     }
 
-    mShaderLibary[szName] = std::move(outProgram);
+    mShaderLibary[szName] = outProgram;
     return true;
 }
