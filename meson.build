@@ -4,16 +4,12 @@
 
 project('Meicu3D', ['c', 'cpp'], meson_version: '>= 1.1.0', version: '0.0.0')
 
-spdlog = dependency('spdlog', required: true)
-glfw3 = dependency('glfw3', required: true)
+subdir('Airy')
 
 executable(
     'meicu3d',
     [
-        'main.cpp',
-        'Airy/AiryGlobalContext.cpp',
-        'Airy/AiryEngine.cpp',
-        'Airy/External/glad/glad.c'
+        'main.cpp'
     ],
-    dependencies: [spdlog, glfw3]
+    link_with: [airy]
 )

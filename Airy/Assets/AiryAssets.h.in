@@ -1,0 +1,11 @@
+//+-------------------------------------------------------------------------------
+//    AiryAssets.h.in - Auto-generated assets file - Generation automatiquement
+//                      Copyleft 2025 42yeah
+
+#pragma once
+
+namespace shaders {
+
+@shaders@
+
+}  // namespace shaders

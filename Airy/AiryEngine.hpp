@@ -4,11 +4,13 @@
 
 #pragma once
 
-#include "Airy/External/glad/glad.h"
-#include "Airy/AiryGlobalContext.hpp"
-#include "Airy/AiryObject.hpp"
+#include "External/glad/glad.h"
+#include "AiryGlobalContext.hpp"
+#include "AiryObject.hpp"
+#include "AiryProgram.hpp"
 
 #include <GLFW/glfw3.h>
+#include <unordered_map>
 #include <cstddef>
 
 class Engine : public Object {
@@ -24,11 +26,17 @@ public:
 
 public:
     bool CreateWindow(size_t width, size_t height, const char *szName);
+    bool CompileInternalShaders();
     void MainLoop();
+
+    bool CompileProgram(
+        const char *szName, const char *vertexShaderPath,
+        const char *fragmentShaderPath, Ref<Program> &outProgram);
 
 private:
     Ref<GlobalContext> mpGlobalContext;
     GLFWwindow *mpWindow;
 
     bool mRunning;
+    std::unordered_map<std::string, Ref<Program> > mShaderLibary;
 };
