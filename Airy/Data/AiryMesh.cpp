@@ -3,7 +3,7 @@
 //                   Copyleft 2025 42yeah
 
 #include "AiryMesh.hpp"
-#include "AiryObject.hpp"
+#include "../Pervasives/AiryObject.hpp"
 #include <memory>
 
 Ref<Mesh> Mesh::TriangleMesh() {

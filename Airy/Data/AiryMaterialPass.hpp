@@ -5,7 +5,7 @@
 #pragma once
 
 #include "AiryProgram.hpp"
-#include "AiryObject.hpp"
+#include "../Pervasives/AiryObject.hpp"
 
 class Material;
 

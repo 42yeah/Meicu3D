@@ -4,12 +4,13 @@
 
 #pragma once
 
-#include "AiryMeshRenderer.hpp"
 #include "External/glad/glad.h"
+
+#include "AiryMeshRenderer.hpp"
 #include "AiryGlobalContext.hpp"
-#include "AiryObject.hpp"
-#include "AiryProgram.hpp"
-#include "AiryMaterial.hpp"
+#include "Data/AiryProgram.hpp"
+#include "Data/AiryMaterial.hpp"
+#include "Pervasives/AiryObject.hpp"
 
 #include <GLFW/glfw3.h>
 #include <unordered_map>

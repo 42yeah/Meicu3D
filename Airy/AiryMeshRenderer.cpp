@@ -3,8 +3,9 @@
 //                           Copyleft 2025 42yeah
 
 #include "AiryMeshRenderer.hpp"
-#include "AiryObject.hpp"
-#include "AiryVertexDataStream.hpp"
+#include "Data/AiryVertexDataStream.hpp"
+#include "Pervasives/AiryObject.hpp"
+
 #include <spdlog/spdlog.h>
 
 void MeshRenderer::Finalize() {

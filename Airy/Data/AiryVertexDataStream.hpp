@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "AiryObject.hpp"
+#include "../Pervasives/AiryObject.hpp"
 
 #include <cstring>
 #include <glm/glm.hpp>

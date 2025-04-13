@@ -3,7 +3,6 @@
 //               Copyleft 2025 42yeah
 
 #include "Airy/AiryEngine.hpp"
-#include "Airy/AiryObject.hpp"
 
 int main() {
     Ref<Engine> engine = std::make_shared<Engine>();

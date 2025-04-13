@@ -5,9 +5,9 @@
 #pragma once
 
 #include "External/glad/glad.h"
-#include "AiryMaterial.hpp"
-#include "AiryMesh.hpp"
-#include "AiryObject.hpp"
+#include "Data/AiryMaterial.hpp"
+#include "Data/AiryMesh.hpp"
+#include "Pervasives/AiryObject.hpp"
 
 #include <utility>
 

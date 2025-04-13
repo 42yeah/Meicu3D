@@ -4,10 +4,10 @@
 
 #include "AiryEngine.hpp"
 
-#include "AiryMesh.hpp"
 #include "Assets/AiryAssets.h"
-#include "AiryObject.hpp"
-#include "AiryShader.hpp"
+#include "Data/AiryShader.hpp"
+#include "Data/AiryMesh.hpp"
+#include "Pervasives/AiryObject.hpp"
 
 #include <GLFW/glfw3.h>
 #include <spdlog/spdlog.h>

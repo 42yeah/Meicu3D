@@ -11,12 +11,12 @@ airy = library(
     [
         'AiryGlobalContext.cpp',
         'AiryEngine.cpp',
-        'AiryShader.cpp',
-        'AiryProgram.cpp',
-        'AiryMesh.cpp',
         'AiryMeshRenderer.cpp',
-        'AiryMaterial.cpp',
-        'AiryMaterialPass.cpp',
+        'Data/AiryShader.cpp',
+        'Data/AiryProgram.cpp',
+        'Data/AiryMesh.cpp',
+        'Data/AiryMaterial.cpp',
+        'Data/AiryMaterialPass.cpp',
         'External/glad/glad.c'
     ],
     dependencies: [spdlog, glfw3, glm]

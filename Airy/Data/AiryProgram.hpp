@@ -4,9 +4,9 @@
 
 #pragma once
 
-#include "External/glad/glad.h"
+#include "../External/glad/glad.h"
 #include "AiryShader.hpp"
-#include "AiryObject.hpp"
+#include "../Pervasives/AiryObject.hpp"
 
 #include <glm/glm.hpp>
 #include <cassert>

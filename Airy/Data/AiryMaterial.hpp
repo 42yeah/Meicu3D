@@ -5,7 +5,7 @@
 #pragma once
 
 #include "AiryMaterialPass.hpp"
-#include "AiryObject.hpp"
+#include "../Pervasives/AiryObject.hpp"
 
 #include <spdlog/spdlog.h>
 #include <glm/glm.hpp>
