@@ -21,9 +21,7 @@ bool AppMain() {
     }
 
     Ref<Scene> scene = engine->GetScene();
-    // Ref<Entity> demoEntity = scene->AddEntity("TriangleEntity");
-    Ref<Entity> demoEntity = std::make_shared<Entity>();
-    demoEntity->SetName("Triangle Entity");
+    Ref<Entity> demoEntity = scene->AddEntity("Triangle Entity");
     Ref<MeshRenderer> demoMeshRenderer = demoEntity->AddComponent<MeshRenderer>();
 
     Ref<Mesh> demoMesh = Mesh::TriangleMesh();
@@ -31,7 +29,8 @@ bool AppMain() {
     Ref<Material> demoMaterial = engine->GetMaterial("Triangle");
     demoMeshRenderer->SetMaterial(std::move(demoMaterial));
 
-    scene->AddEntity(std::move(demoEntity));
+    Ref<Entity> cameraMan = scene->AddEntity("Camera Man");
+    cameraMan->AddComponent<Camera>();
 
     engine->MainLoop();
 

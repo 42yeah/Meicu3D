@@ -5,5 +5,4 @@
 #include "AirySystem.hpp"
 
 void System::Finalize() {
-
 }

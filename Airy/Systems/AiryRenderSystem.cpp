@@ -6,9 +6,11 @@
 
 #include "../ECS/AiryEntity.hpp"
 #include "../Components/AiryMeshRenderer.hpp"
+#include "../Data/AiryRenderContext.hpp"
 #include "../Pervasives/AiryObject.hpp"
 
 #include <algorithm>
+#include <cassert>
 #include <spdlog/spdlog.h>
 
 bool RenderSystem::Init() {
@@ -20,14 +22,28 @@ void RenderSystem::Finalize() {
 }
 
 bool RenderSystem::RegisterEntity(const Ref<Entity> &entity) {
+    return UpdateEntity(entity);
+}
+
+bool RenderSystem::UpdateEntity(const Ref<Entity> &entity) {
     if (!entity)
         return false;
 
-    const MeshRenderer *pMeshRenderer = entity->GetComponentPtr<MeshRenderer>();
-    if (!pMeshRenderer) return false;
+    auto it = mEntities.find(entity);
+    bool entityRegistered = (it != mEntities.end());
+    bool hasMeshRenderer = entity->GetComponentPtr<MeshRenderer>();
 
-    mEntities.push_back(entity);
-    return true;
+    if (hasMeshRenderer == entityRegistered) {
+        return false;
+    } else if (hasMeshRenderer && !entityRegistered) {
+        mEntities.emplace(entity);
+        return true;
+    } else if (!hasMeshRenderer && entityRegistered) {
+        mEntities.erase(it);
+        return false;
+    }
+    assert(false);  // Unreachable
+    return false;
 }
 
 bool RenderSystem::UnregisterEntity(const Ref<Entity> &entity) {
@@ -38,7 +54,15 @@ bool RenderSystem::UnregisterEntity(const Ref<Entity> &entity) {
     return true;
 }
 
-bool RenderSystem::Render() {
+bool RenderSystem::Render(const Ref<Camera> &camera) {
+    if (!camera) {
+        spdlog::error("Rendering for a NULL camera");
+        return false;
+    }
+
+    RenderContext renderContext;
+    renderContext.camera = camera;
+
     for (auto it = mEntities.cbegin(); it != mEntities.cend();) {
         const Entity *pEntity = it->get();
         const Ref<MeshRenderer> &meshRenderer = pEntity->GetComponent<MeshRenderer>();
@@ -51,7 +75,7 @@ bool RenderSystem::Render() {
             continue;
         }
 
-        if (!meshRenderer->Render("Lighting")) {
+        if (!meshRenderer->Render(renderContext, "Lighting")) {
             spdlog::error("Failed to render entity {}", pEntity->Name());
         }
 

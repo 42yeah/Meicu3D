@@ -5,6 +5,7 @@
 #pragma once
 
 #include "AiryProgram.hpp"
+#include "AiryRenderContext.hpp"
 #include "../Pervasives/AiryObject.hpp"
 
 class Material;
@@ -25,7 +26,7 @@ public:
 
     // Let the renderer use it
     // TODO: Model matrices et al.
-    void SetupRenderer();
+    void SetupRenderer(const RenderContext &renderContext);
 
 private:
     Material *mpMaterial;

@@ -6,9 +6,10 @@
 #pragma once
 
 #include "../ECS/AirySystem.hpp"
+#include "../Components/AiryCamera.hpp"
 #include "../Pervasives/AiryObject.hpp"
 
-#include <vector>
+#include <set>
 
 class RenderSystem : public System {
 public:
@@ -26,10 +27,11 @@ public:
     void Finalize() override;
 
     bool RegisterEntity(const Ref<Entity> &entity) override;
+    bool UpdateEntity(const Ref<Entity> &entity) override;
     bool UnregisterEntity(const Ref<Entity> &entity) override;
 
-    bool Render();
+    bool Render(const Ref<Camera> &camera);
 
 private:
-    std::vector<Ref<Entity> > mEntities;
+    std::set<Ref<Entity> > mEntities;
 };

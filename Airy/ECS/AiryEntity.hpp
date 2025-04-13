@@ -4,17 +4,22 @@
 
 #pragma once
 
-#include "../ECS/AiryComponent.hpp"
+#include "AiryComponent.hpp"
+
+#include "../Data/AiryTransform.hpp"
 #include "../Pervasives/AiryObject.hpp"
 
-#include <memory>
+#include <glm/glm.hpp>
 #include <spdlog/spdlog.h>
+#include <memory>
 #include <type_traits>
 #include <unordered_map>
 
-class Entity : public Object {
+class Scene;
+
+class Entity : public Object, public std::enable_shared_from_this<Entity> {
 public:
-    Entity() : mName("Entity"), mComponents() {}
+    Entity() : mName("Entity"), mComponents(), mTransform(), mpScene(nullptr) {}
     ~Entity() {
         Finalize();
     }
@@ -43,6 +48,8 @@ public:
                 it->second->Name(), Name());
         }
         mComponents[typeHash] = comp;
+
+        NotifyScene();
         return comp;
     }
 
@@ -62,6 +69,7 @@ public:
                 it->second->Name(), Name(), comp->Name());
         }
         mComponents[typeHash] = std::forward<T>(comp);
+        NotifyScene();
     }
 
     template <typename T>
@@ -89,7 +97,28 @@ public:
         return mComponents;
     }
 
+    void SetTransform(const Transform &transform) {
+        mTransform = transform;
+    }
+    const Transform GetTransform() const {
+        return mTransform;
+    }
+
+    // WARN: Should be used by `Scene` only
+    void SetScene(Scene *pScene) {
+        mpScene = pScene;
+    }
+    Scene *GetScene() const {
+        return mpScene;
+    }
+
+private:
+    void NotifyScene();
+
 private:
     std::string mName;
     std::unordered_map<size_t, Ref<Component> > mComponents;
+    Transform mTransform;
+
+    Scene *mpScene;
 };

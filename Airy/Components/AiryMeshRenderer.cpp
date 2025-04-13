@@ -3,8 +3,11 @@
 //                           Copyleft 2025 42yeah
 
 #include "AiryMeshRenderer.hpp"
-#include "Data/AiryVertexDataStream.hpp"
-#include "Pervasives/AiryObject.hpp"
+
+#include "../Data/AiryRenderContext.hpp"
+#include "../Data/AiryVertexDataStream.hpp"
+#include "../ECS/AiryEntity.hpp"
+#include "../Pervasives/AiryObject.hpp"
 
 #include <spdlog/spdlog.h>
 
@@ -96,7 +99,7 @@ bool MeshRenderer::Prepare() {
     return true;
 }
 
-bool MeshRenderer::Render(const char *szPassName) {
+bool MeshRenderer::Render(RenderContext &renderContext, const char *szPassName) {
     if (!mReady) {
         bool ok = Prepare();
         if (!ok || !mReady)
@@ -111,7 +114,8 @@ bool MeshRenderer::Render(const char *szPassName) {
         return false;
     }
 
-    pass->SetupRenderer();
+    renderContext.transform = mpEntity->GetTransform();
+    pass->SetupRenderer(renderContext);
 
     glBindVertexArray(mVAO);
 

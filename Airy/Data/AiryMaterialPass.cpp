@@ -5,7 +5,9 @@
 #include "AiryMaterialPass.hpp"
 
 #include "AiryMaterial.hpp"
+#include "AiryRenderContext.hpp"
 
+#include <glm/gtc/type_ptr.hpp>
 #include <spdlog/spdlog.h>
 #include <variant>
 
@@ -14,7 +16,7 @@ void MaterialPass::Finalize() {
     mProgram = nullptr;
 }
 
-void MaterialPass::SetupRenderer() {
+void MaterialPass::SetupRenderer(const RenderContext &renderContext) {
     if (!mpMaterial || !mProgram) {
         spdlog::error("Incomplete material pass");
         assert(false);
@@ -22,6 +24,11 @@ void MaterialPass::SetupRenderer() {
     }
 
     mProgram->Use();
+
+    // MVP
+    mProgram->UniformMat4x4f("model", renderContext.transform.Matrix());
+    mProgram->UniformMat4x4f("view", renderContext.camera->View());
+    mProgram->UniformMat4x4f("perspective", renderContext.camera->Perspective());
 
     const std::unordered_map<const char *, MaterialProperty> &props =
         mpMaterial->Properties().mProperties;

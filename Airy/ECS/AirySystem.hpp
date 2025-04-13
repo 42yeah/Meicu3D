@@ -17,6 +17,7 @@ public:
     virtual const char *Name() = 0;
 
     virtual bool RegisterEntity(const Ref<Entity> &entity) = 0;
+    virtual bool UpdateEntity(const Ref<Entity> &entity) = 0;
     virtual bool UnregisterEntity(const Ref<Entity> &entity) = 0;
 
 public:

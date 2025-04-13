@@ -18,6 +18,7 @@ airy = library(
         'ECS/AiryComponent.cpp',
         'ECS/AirySystem.cpp',
         'Components/AiryMeshRenderer.cpp',
+        'Components/AiryCamera.cpp',
         'Systems/AiryRenderSystem.cpp',
         'AiryGlobalContext.cpp',
         'AiryEngine.cpp',

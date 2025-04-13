@@ -5,15 +5,16 @@
 #pragma once
 
 #include "ECS/AiryEntity.hpp"
-#include "Pervasives/AiryObject.hpp"
 #include "ECS/AirySystem.hpp"
+#include "Components/AiryCamera.hpp"
+#include "Pervasives/AiryObject.hpp"
 
 #include <unordered_map>
 #include <vector>
 
 class Scene : public Object {
 public:
-    Scene() : mSystems(), mEntities() {}
+    Scene() : mSystems(), mEntities(), mMainCamera(nullptr) {}
     ~Scene() {
         Finalize();
     }
@@ -67,10 +68,17 @@ public:
 
     void AddEntity(const Ref<Entity> &entity);
     Ref<Entity> AddEntity(const char *szName);
+    void RemoveEntity(const Ref<Entity> &entity);
+
+    void SetMainCamera(const Ref<Camera> &camera) {
+        mMainCamera = camera;
+    }
+
+    void NotifyEntityChanged(const Ref<Entity> &entity);
 
 private:
     std::unordered_map<size_t, Ref<System> > mSystems;
+    std::vector<Ref<Entity> > mEntities;
 
-    using EntityGroup = std::vector<Ref<Entity> >;
-    EntityGroup mEntities;
+    Ref<Camera> mMainCamera;
 };

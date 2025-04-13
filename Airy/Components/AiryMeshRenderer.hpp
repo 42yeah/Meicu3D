@@ -8,8 +8,11 @@
 
 #include "../Data/AiryMaterial.hpp"
 #include "../Data/AiryMesh.hpp"
+#include "../Data/AiryMaterialPass.hpp"
+#include "../Data/AiryRenderContext.hpp"
 #include "../ECS/AiryComponent.hpp"
 
+#include <glm/glm.hpp>
 #include <utility>
 
 class MeshRenderer : public Component {
@@ -43,7 +46,7 @@ public:
     void Finalize() override;
 
     bool Prepare();
-    bool Render(const char *szPassName);
+    bool Render(RenderContext &renderContext, const char *szPassName);
 
 private:
     Ref<Mesh> mMesh;
