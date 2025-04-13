@@ -5,8 +5,8 @@
 #pragma once
 
 #include "../External/glad/glad.h"
-#include "../Pervasives/AiryObject.hpp"
 #include "AiryVertexDataStream.hpp"
+#include "../Pervasives/AiryObject.hpp"
 
 #include <utility>
 

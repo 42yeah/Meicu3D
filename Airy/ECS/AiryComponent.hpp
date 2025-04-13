@@ -4,9 +4,8 @@
 
 #pragma once
 
-#include <string>
-
 #include "../Pervasives/AiryObject.hpp"
+#include <string>
 
 class Entity;
 
