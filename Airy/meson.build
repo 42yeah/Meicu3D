@@ -9,15 +9,20 @@ glm = dependency('glm', required: true)
 airy = library(
     'airy',
     [
-        'AiryGlobalContext.cpp',
-        'AiryEngine.cpp',
-        'AiryMeshRenderer.cpp',
         'Data/AiryShader.cpp',
         'Data/AiryProgram.cpp',
         'Data/AiryMesh.cpp',
         'Data/AiryMaterial.cpp',
         'Data/AiryMaterialPass.cpp',
-        'External/glad/glad.c'
+        'ECS/AiryEntity.cpp',
+        'ECS/AiryComponent.cpp',
+        'ECS/AirySystem.cpp',
+        'Components/AiryMeshRenderer.cpp',
+        'Systems/AiryRenderSystem.cpp',
+        'AiryGlobalContext.cpp',
+        'AiryEngine.cpp',
+        'AiryScene.cpp',
+        'External/glad/glad.c',
     ],
     dependencies: [spdlog, glfw3, glm]
 )

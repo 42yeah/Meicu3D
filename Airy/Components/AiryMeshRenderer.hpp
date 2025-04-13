@@ -4,14 +4,15 @@
 
 #pragma once
 
-#include "External/glad/glad.h"
-#include "Data/AiryMaterial.hpp"
-#include "Data/AiryMesh.hpp"
-#include "Pervasives/AiryObject.hpp"
+#include "../External/glad/glad.h"
+
+#include "../Data/AiryMaterial.hpp"
+#include "../Data/AiryMesh.hpp"
+#include "../ECS/AiryComponent.hpp"
 
 #include <utility>
 
-class MeshRenderer : public Object {
+class MeshRenderer : public Component {
 public:
     MeshRenderer()
         : mMesh(nullptr)
@@ -21,6 +22,7 @@ public:
         , mVAO(GL_NONE)
         , mVBO(GL_NONE)
         , mEBO(GL_NONE) {
+        SetName("MeshRenderer");
     }
 
     ~MeshRenderer() {

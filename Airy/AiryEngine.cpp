@@ -13,7 +13,6 @@
 #include <spdlog/spdlog.h>
 
 void Engine::Finalize() {
-    mTestMeshRenderer = nullptr;
     mShaderLibary.clear();
     mMaterials.clear();
     if (mpWindow) {
@@ -52,12 +51,13 @@ bool Engine::InitEngine() {
 
         CreateInternalMaterials();
 
-        CreateDebugStuffs();
+        mScene = std::make_shared<Scene>();
+        if (!mScene->Init()) break;
 
         return true;
     } while (false);
 
-    return true;
+    return false;
 }
 
 void Engine::MainLoop() {
@@ -68,7 +68,6 @@ void Engine::MainLoop() {
 
         glClearColor(1.0f, 0.5f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        mTestMeshRenderer->Render("Lighting");
 
         glfwSwapBuffers(mpWindow);
     }
@@ -96,15 +95,6 @@ void Engine::CreateInternalMaterials() {
     // triangleMaterial->DeclareProperty<float>("time");
 
     mMaterials["Triangle"] = std::move(triangleMaterial);
-}
-
-void Engine::CreateDebugStuffs() {
-    Ref<Mesh> testMesh = Mesh::TriangleMesh();
-    Ref<MeshRenderer> renderer = std::make_shared<MeshRenderer>();
-    renderer->SetMesh(std::move(testMesh));
-    renderer->SetMaterial(mMaterials["Triangle"]);
-
-    mTestMeshRenderer = std::move(renderer);
 }
 
 bool Engine::CompileProgram(

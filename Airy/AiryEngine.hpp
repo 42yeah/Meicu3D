@@ -6,7 +6,7 @@
 
 #include "External/glad/glad.h"
 
-#include "AiryMeshRenderer.hpp"
+#include "AiryScene.hpp"
 #include "AiryGlobalContext.hpp"
 #include "Data/AiryProgram.hpp"
 #include "Data/AiryMaterial.hpp"
@@ -24,7 +24,7 @@ public:
         , mRunning(false)
         , mShaderLibary()
         , mMaterials()
-        , mTestMeshRenderer(nullptr) {
+        , mScene(nullptr) {
     }
 
     ~Engine() override {
@@ -45,7 +45,6 @@ public:
 private:
     bool CompileInternalShaders();
     void CreateInternalMaterials();
-    void CreateDebugStuffs();
 
     bool CompileProgram(
         const char *szName, const char *vertexShaderPath,
@@ -59,5 +58,5 @@ private:
     std::unordered_map<std::string, Ref<Program> > mShaderLibary;
     std::unordered_map<std::string, Ref<Material> > mMaterials;
 
-    Ref<MeshRenderer> mTestMeshRenderer;
+    Ref<Scene> mScene;
 };
