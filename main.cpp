@@ -3,25 +3,46 @@
 //               Copyleft 2025 42yeah
 
 #include "Airy/AiryEngine.hpp"
+#include "Airy/AiryScene.hpp"
+#include "Airy/Components/AiryMeshRenderer.hpp"
+#include "Airy/Pervasives/AiryObject.hpp"
 
-int main() {
+bool AppMain() {
     Ref<Engine> engine = std::make_shared<Engine>();
 
-    do {
-        if (!engine->CreateWindow(400, 300, "Hello")) {
-            spdlog::error("Failed to create window");
-            return 1;
-        }
+    if (!engine->CreateWindow(400, 300, "Hello")) {
+        spdlog::error("Failed to create window");
+        return false;
+    }
 
-        if (!engine->InitEngine()) {
-            spdlog::error("Failed to initialize engine");
-            return 2;
-        }
+    if (!engine->InitEngine()) {
+        spdlog::error("Failed to initialize engine");
+        return false;
+    }
 
-        engine->MainLoop();
+    Ref<Scene> scene = engine->GetScene();
+    // Ref<Entity> demoEntity = scene->AddEntity("TriangleEntity");
+    Ref<Entity> demoEntity = std::make_shared<Entity>();
+    demoEntity->SetName("Triangle Entity");
+    Ref<MeshRenderer> demoMeshRenderer = demoEntity->AddComponent<MeshRenderer>();
 
-        return 0;
-    } while (false);
+    Ref<Mesh> demoMesh = Mesh::TriangleMesh();
+    demoMeshRenderer->SetMesh(demoMesh);
+    Ref<Material> demoMaterial = engine->GetMaterial("Triangle");
+    demoMeshRenderer->SetMaterial(std::move(demoMaterial));
 
-    return 1;
+    scene->AddEntity(std::move(demoEntity));
+
+    engine->MainLoop();
+
+    return true;
+}
+
+int main() {
+    bool ok = AppMain();
+
+    if (!ok)
+        return 1;
+
+    return 0;
 }

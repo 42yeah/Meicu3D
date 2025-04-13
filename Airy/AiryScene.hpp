@@ -66,6 +66,7 @@ public:
     bool Render();
 
     void AddEntity(const Ref<Entity> &entity);
+    Ref<Entity> AddEntity(const char *szName);
 
 private:
     std::unordered_map<size_t, Ref<System> > mSystems;

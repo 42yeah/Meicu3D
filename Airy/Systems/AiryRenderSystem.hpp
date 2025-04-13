@@ -6,7 +6,6 @@
 #pragma once
 
 #include "../ECS/AirySystem.hpp"
-#include "../Components/AiryMeshRenderer.hpp"
 #include "../Pervasives/AiryObject.hpp"
 
 #include <vector>

@@ -6,7 +6,6 @@
 
 #include "Assets/AiryAssets.h"
 #include "Data/AiryShader.hpp"
-#include "Data/AiryMesh.hpp"
 #include "Pervasives/AiryObject.hpp"
 
 #include <GLFW/glfw3.h>
@@ -69,16 +68,34 @@ void Engine::MainLoop() {
         glClearColor(1.0f, 0.5f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+        if (!mScene->Render()) {
+            spdlog::warn("Failed to render scene");
+        }
+
         glfwSwapBuffers(mpWindow);
     }
 
     mRunning = false;
 }
 
+Ref<Material> Engine::GetMaterial(const char *szMaterialName) const {
+    auto it = mMaterials.find(szMaterialName);
+    if (it == mMaterials.end())
+        return nullptr;
+    return it->second;
+}
+
+const Material *Engine::GetMaterialPtr(const char *szMaterialName) const {
+    auto it = mMaterials.find(szMaterialName);
+    if (it == mMaterials.end())
+        return nullptr;
+    return it->second.get();
+}
+
 bool Engine::CompileInternalShaders() {
     Ref<Program> program = nullptr;
 
-    CompileProgram(
+    CompileAndCacheProgram(
         "Triangle",
         shaders::Triangle_vs_Path(),
         shaders::Triangle_fs_Path(),
@@ -92,12 +109,11 @@ void Engine::CreateInternalMaterials() {
     Ref<MaterialPass> trianglePass = std::make_shared<MaterialPass>(triangleMaterial.get(), mShaderLibary["Triangle"]);
 
     triangleMaterial->AddPass("Lighting", trianglePass);
-    // triangleMaterial->DeclareProperty<float>("time");
 
     mMaterials["Triangle"] = std::move(triangleMaterial);
 }
 
-bool Engine::CompileProgram(
+bool Engine::CompileAndCacheProgram(
     const char *szName, const char *vertexShaderPath,
     const char *fragmentShaderPath, Ref<Program> &outProgram) {
 

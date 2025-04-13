@@ -4,6 +4,7 @@
 
 #include "AiryScene.hpp"
 
+#include "ECS/AiryEntity.hpp"
 #include "ECS/AirySystem.hpp"
 #include "Systems/AiryRenderSystem.hpp"
 #include "Pervasives/AiryObject.hpp"
@@ -67,4 +68,11 @@ void Scene::AddEntity(const Ref<Entity> &entity) {
     for (std::pair<size_t, const Ref<System> &> systemPair : mSystems) {
         systemPair.second->RegisterEntity(entity);
     }
+}
+
+Ref<Entity> Scene::AddEntity(const char *szName) {
+    Ref<Entity> entity = std::make_shared<Entity>();
+    entity->SetName(szName);
+    AddEntity(entity);
+    return entity;
 }

@@ -65,28 +65,14 @@ public:
     }
 
     template <typename T>
-    Ref<T> GetComponent() {
-        static_assert(
-            std::is_base_of<Component, T>(), "Failed type compliancy test");
-        size_t typeHash = typeid(T).hash_code();
-        return std::static_pointer_cast<T>(mComponents[typeHash]);
-    }
-    template <typename T>
     Ref<T> GetComponent() const {
         static_assert(
             std::is_base_of<Component, T>(), "Failed type compliancy test");
         size_t typeHash = typeid(T).hash_code();
         auto it = mComponents.find(typeHash);
         if (it != mComponents.end())
-            return *it;
+            return std::static_pointer_cast<T>(it->second);
         return nullptr;
-    }
-    template <typename T>
-    T *GetComponentPtr() {
-        static_assert(
-            std::is_base_of<Component, T>(), "Failed type compliancy test");
-        size_t typeHash = typeid(T).hash_code();
-        return static_cast<T *>(mComponents[typeHash].get());
     }
     template <typename T>
     const T *GetComponentPtr() const {
@@ -95,8 +81,8 @@ public:
         size_t typeHash = typeid(T).hash_code();
         auto it = mComponents.find(typeHash);
         if (it != mComponents.end())
-            return *it;
-        return static_cast<T *>(it->second.get());
+            return static_cast<T *>(it->second.get());
+        return nullptr;
     }
 
     const std::unordered_map<size_t, Ref<Component> > &Components() {

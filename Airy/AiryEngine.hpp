@@ -42,11 +42,18 @@ public:
 
     void MainLoop();
 
+    const Ref<Scene> GetScene() const {
+        return mScene;
+    }
+
+    Ref<Material> GetMaterial(const char *szMaterialName) const;
+    const Material *GetMaterialPtr(const char *szMaterialName) const;
+
 private:
     bool CompileInternalShaders();
     void CreateInternalMaterials();
 
-    bool CompileProgram(
+    bool CompileAndCacheProgram(
         const char *szName, const char *vertexShaderPath,
         const char *fragmentShaderPath, Ref<Program> &outProgram);
 

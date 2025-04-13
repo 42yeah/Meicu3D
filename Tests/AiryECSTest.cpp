@@ -5,6 +5,7 @@
 
 #include "../Airy/AiryScene.hpp"
 #include "../Airy/Systems/AiryRenderSystem.hpp"
+#include "../Airy/Components/AiryMeshRenderer.hpp"
 #include "../Airy/ECS/AiryEntity.hpp"
 
 #include <spdlog/spdlog.h>
