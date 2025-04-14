@@ -26,9 +26,14 @@ void MaterialPass::SetupRenderer(const RenderContext &renderContext) {
     mProgram->Use();
 
     // MVP
-    mProgram->UniformMat4x4f("model", renderContext.transform.Matrix());
-    mProgram->UniformMat4x4f("view", renderContext.camera->View());
-    mProgram->UniformMat4x4f("perspective", renderContext.camera->Perspective());
+    if (mProgram->HasUniform("model"))
+        mProgram->UniformMat4x4f("model", renderContext.transform.Matrix());
+
+    if (mProgram->HasUniform("view"))
+        mProgram->UniformMat4x4f("view", renderContext.camera->View());
+
+    if (mProgram->HasUniform("perspective"))
+        mProgram->UniformMat4x4f("perspective", renderContext.camera->Perspective());
 
     const std::unordered_map<const char *, MaterialProperty> &props =
         mpMaterial->Properties().mProperties;

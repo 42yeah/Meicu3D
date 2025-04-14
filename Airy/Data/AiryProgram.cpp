@@ -122,14 +122,19 @@ bool Program::UniformMat4x4f(const char *szUniformName, const glm::mat4 &mat4) {
     return true;
 }
 
-const std::optional<GLint> &Program::FindUniform(const char *szUniformName) {
+bool Program::HasUniform(const char *szUniformName) {
+    std::optional<GLint> location = FindUniform(szUniformName, true);
+    return (*location >= 0);
+}
+
+const std::optional<GLint> &Program::FindUniform(const char *szUniformName, bool silent) {
     std::optional<GLint> &cachedLocation = mLocationCache[szUniformName];
     if (cachedLocation) {
         // Don't bother locating again
         return cachedLocation;
     }
     cachedLocation = glGetUniformLocation(mProgram, szUniformName);
-    if (*cachedLocation < 0) {
+    if (!silent && *cachedLocation < 0) {
         spdlog::warn("Failed to find uniform variable: {}", szUniformName);
     }
     return cachedLocation;

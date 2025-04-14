@@ -49,8 +49,10 @@ public:
     bool UniformMat3x3f(const char *szUniformName, const glm::mat3 &mat3);
     bool UniformMat4x4f(const char *szUniformName, const glm::mat4 &mat4);
 
+    bool HasUniform(const char *szUniformName);
+
 private:
-    const std::optional<GLint> &FindUniform(const char *szUniformName);
+    const std::optional<GLint> &FindUniform(const char *szUniformName, bool silent = false);
 
 private:
     bool mValid;
